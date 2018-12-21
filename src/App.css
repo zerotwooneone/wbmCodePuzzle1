@@ -2,4 +2,6 @@
 
 .solution {
   font-family: monospace, monospace;
+  padding: 10px;
+  padding-bottom: 50px;
 }

@@ -76,7 +76,7 @@ class Solution extends React.Component {
 
     if (!currentArr.length ||
       !others.length) {
-      return;
+      return [];
     }
 
     if (others.length === 1) {
@@ -100,7 +100,7 @@ class Solution extends React.Component {
         //console.log("result",JSON.stringify(result)); 
         return result;
       } else {
-        return null;
+        return [];
       }
     }
   }
@@ -110,8 +110,9 @@ class Solution extends React.Component {
     let innerArray = array2d.shift();
 
     //console.log("innerArray", JSON.stringify(innerArray));
-    //console.log("others", JSON.stringify(array2d));
-    if (array2d.length === 0) {
+    //console.log("array2d", JSON.stringify(array2d));
+    if (array2d.length === 0 ||
+      innerArray.length === 0) {
       return null;
     }
     let perm = this.permutate(innerArray, array2d)
