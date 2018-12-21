@@ -82,22 +82,22 @@ class Solution extends React.Component {
     if (others.length === 1) {
       return currentArr.map((v, i) => {
         let result = others[0].map((ov, oi) => [v, ...ov]);
-//console.log("result", JSON.stringify(result));
+        //console.log("result", JSON.stringify(result));
         return result;
       })
     } else {
-//console.log("others 2",JSON.stringify(others));
+      //console.log("others 2",JSON.stringify(others));
       let permutated = this.otherPermutate(others);
-//console.log("permutated", JSON.stringify(permutated ? permutated : null));
+      //console.log("permutated", JSON.stringify(permutated ? permutated : null));
       if (permutated) {
         let result = permutated.map((v, i) => {
           return currentArr.map((cv, ci) => {
             let ra = [cv, ...v];
-//console.log("ra",JSON.stringify(ra));
+            //console.log("ra",JSON.stringify(ra));
             return ra;
           })
         });
-//console.log("result",JSON.stringify(result)); 
+        //console.log("result",JSON.stringify(result)); 
         return result;
       } else {
         return null;
@@ -106,31 +106,24 @@ class Solution extends React.Component {
   }
 
   otherPermutate(array2d) {
-console.log("array2d",JSON.stringify(array2d));
-    let remaining = array2d.slice(0);
-    let otherPermutateResult = array2d
-      .map((innerArray, index) => {
-console.log("innerArray",JSON.stringify(innerArray));
-        remaining[index] = null;
-        let others = remaining.filter((v, i) => v !== null);
-console.log("others",JSON.stringify(others));
-        if (others.length === 0) {
-          return null;
-        }
-        let perm = this.permutate(innerArray, others);
-        //console.log("perm",JSON.stringify(perm));
-        return perm;
-      })
-      .flat()
+    //console.log("array2d", JSON.stringify(array2d));
+    let innerArray = array2d.shift();
+
+    //console.log("innerArray", JSON.stringify(innerArray));
+    //console.log("others", JSON.stringify(array2d));
+    if (array2d.length === 0) {
+      return null;
+    }
+    let perm = this.permutate(innerArray, array2d)
       .filter(v => v !== null)
       .flat();
-//console.log("otherPermutateResult",JSON.stringify(otherPermutateResult); 
-      return otherPermutateResult;
+    //console.log("perm",JSON.stringify(perm));
+    return perm;
   }
 
   renderCombos(input) {
     //console.log(JSON.stringify(input));
-    return this.otherPermutate(input).map((arr, index) => {
+    return (this.otherPermutate(input) || []).map((arr, index) => {
       //console.log("arr",JSON.stringify(arr));
       return (<div key={index}>
         {JSON.stringify(arr)}
