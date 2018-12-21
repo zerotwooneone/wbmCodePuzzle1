@@ -4,7 +4,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run:
 
-### `open dist/index.html`
+### `open dist/index.html in your browser`
 This will allow you to run the app locally without having to compile.
 
 ### `npm start`
