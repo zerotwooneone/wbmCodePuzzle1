@@ -60,7 +60,7 @@ class Solution extends React.Component {
     }
   }
 
-  sanitize(input) {
+  mapInputs(input) {
     //console.log(input);
     return input
       .split("")
@@ -70,28 +70,28 @@ class Solution extends React.Component {
       });
   }
 
-  permutate(currentArr, others) {
+  permutate(array1D, others) {
     //console.log("currentArr",JSON.stringify(currentArr));
     //console.log("others",JSON.stringify(others));
 
-    if (!currentArr.length ||
+    if (!array1D.length ||
       !others.length) {
       return [];
     }
 
     if (others.length === 1) {
-      return currentArr.map((v, i) => {
+      return array1D.map((v, i) => {
         let result = others[0].map((ov, oi) => [v, ...ov]);
         //console.log("result", JSON.stringify(result));
         return result;
       })
     } else {
       //console.log("others 2",JSON.stringify(others));
-      let permutated = this.otherPermutate(others);
+      let permutated = this.permutate2d(others);
       //console.log("permutated", JSON.stringify(permutated ? permutated : null));
       if (permutated) {
         let result = permutated.map((v, i) => {
-          return currentArr.map((cv, ci) => {
+          return array1D.map((cv, ci) => {
             let ra = [cv, ...v];
             //console.log("ra",JSON.stringify(ra));
             return ra;
@@ -105,18 +105,17 @@ class Solution extends React.Component {
     }
   }
 
-  otherPermutate(array2d) {
+  permutate2d(array2d) {
     //console.log("array2d", JSON.stringify(array2d));
-    let innerArray = array2d.shift();
+    let target = array2d.shift();
 
     //console.log("innerArray", JSON.stringify(innerArray));
     //console.log("array2d", JSON.stringify(array2d));
     if (array2d.length === 0 ||
-      innerArray.length === 0) {
+      target.length === 0) {
       return null;
     }
-    let perm = this.permutate(innerArray, array2d)
-      .filter(v => v !== null)
+    let perm = this.permutate(target, array2d)
       .flat();
     //console.log("perm",JSON.stringify(perm));
     return perm;
@@ -124,7 +123,7 @@ class Solution extends React.Component {
 
   renderCombos(input) {
     //console.log(JSON.stringify(input));
-    return (this.otherPermutate(input) || []).map((arr, index) => {
+    return (this.permutate2d(input) || []).map((arr, index) => {
       //console.log("arr",JSON.stringify(arr));
       return (<div key={index}>
         {JSON.stringify(arr)}
@@ -136,9 +135,8 @@ class Solution extends React.Component {
     return (
       <div className="solution">
         {this.renderCombos.bind(this)(
-          this.sanitize
-            .bind(this)(this.props.input)
-        )}
+          this.mapInputs.bind(this)(this.props.input))
+        }
       </div>
     );
   }
