@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
@@ -82,22 +81,24 @@ class Solution extends React.Component {
     if (others.length === 1) {
       return currentArr.map((v, i) => {
         let result = others[0].map((ov, oi) => [v, ...ov]);
-//console.log("result",JSON.stringify(result));
+console.log("result",JSON.stringify(result));
         return result;
       })
     } else {
-      //console.log("others 2",JSON.stringify(others));
+//console.log("others 2",JSON.stringify(others));
+      let remaining = others.slice(0);
       let op = others.map((oArr, index) => {
-        let otherOthers = others.filter((v, i) => i !== index);
+        remaining[index] = null;
+        let otherOthers = remaining.filter((v, i) => v !== null);
         //console.log("oArr",JSON.stringify(oArr));
         //console.log("otherOthers",JSON.stringify(otherOthers));
         let permutated = this.permutate(oArr, otherOthers);
-console.log("permutated", JSON.stringify(permutated ? permutated.flat() : undefined));
+//console.log("permutated", JSON.stringify(permutated ? permutated.flat() : undefined));
         if (permutated) {
           return permutated.flat().map((v,i)=>{
             return currentArr.map((cv,ci)=>{
               let ra = [cv,...v];
-console.log("ra",JSON.stringify(ra));
+//console.log("ra",JSON.stringify(ra));
               return ra;
             })
           })
@@ -107,7 +108,7 @@ console.log("ra",JSON.stringify(ra));
         }
       });
 //console.log("op.flat",JSON.stringify(op.flat()));
-      return op.flat();
+      return op.flat().filter(av=>av !== null);
     }
   }
 
