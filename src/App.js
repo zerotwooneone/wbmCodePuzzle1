@@ -13,8 +13,9 @@ class App extends Component {
 
   handleInputChanged(e) {
     //console.log('value is', e.target.value)
-    this.state.value = e.target.value;
-    this.forceUpdate(); //this is a HACK
+    this.setState({
+      value : e.target.value
+    });
   }
 
   render() {
