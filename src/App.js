@@ -27,6 +27,7 @@ class App extends Component {
             onChange={this.handleInputChanged.bind(this)}
             type="text" />
         </div>
+        <h1>Solution</h1>
         <div>
           <Solution input={this.state.value}></Solution>
         </div>
@@ -70,8 +71,8 @@ class Solution extends React.Component {
   }
 
   permutate(currentArr, others) {
-//console.log("currentArr",JSON.stringify(currentArr));
-//console.log("others",JSON.stringify(others));
+    //console.log("currentArr",JSON.stringify(currentArr));
+    //console.log("others",JSON.stringify(others));
 
     if (!currentArr.length ||
       !others.length) {
@@ -81,49 +82,53 @@ class Solution extends React.Component {
     if (others.length === 1) {
       return currentArr.map((v, i) => {
         let result = others[0].map((ov, oi) => [v, ...ov]);
-console.log("result",JSON.stringify(result));
+        //console.log("result", JSON.stringify(result));
         return result;
       })
     } else {
-//console.log("others 2",JSON.stringify(others));
-      let remaining = others.slice(0);
-      let op = others.map((oArr, index) => {
-        remaining[index] = null;
-        let otherOthers = remaining.filter((v, i) => v !== null);
-        //console.log("oArr",JSON.stringify(oArr));
-        //console.log("otherOthers",JSON.stringify(otherOthers));
-        let permutated = this.permutate(oArr, otherOthers);
-//console.log("permutated", JSON.stringify(permutated ? permutated.flat() : undefined));
-        if (permutated) {
-          return permutated.flat().map((v,i)=>{
-            return currentArr.map((cv,ci)=>{
-              let ra = [cv,...v];
-//console.log("ra",JSON.stringify(ra));
-              return ra;
-            })
+      //console.log("others 2",JSON.stringify(others));
+      let permutated = this.otherPermutate(others);
+      //console.log("permutated", JSON.stringify(permutated ? permutated.flat() : undefined));
+      if (permutated) {
+        return permutated.flat().map((v, i) => {
+          return currentArr.map((cv, ci) => {
+            let ra = [cv, ...v];
+            //console.log("ra",JSON.stringify(ra));
+            return ra;
           })
+        })
           .flat();
-        } else {
-          return null;
-        }
-      });
-//console.log("op.flat",JSON.stringify(op.flat()));
-      return op.flat().filter(av=>av !== null);
+      } else {
+        return null;
+      }
     }
   }
 
+  otherPermutate(array2d) {
+    let remaining = array2d.slice(0);
+    return array2d
+      .map((innerArray, index) => {
+        //console.log("innerArray",JSON.stringify(innerArray));
+        remaining[index] = null;
+        let others = remaining.filter((v, i) => v !== null);
+        //console.log("others",JSON.stringify(others));
+        if (others.length === 0) {
+          return null;
+        }
+        let perm = this.permutate(innerArray, others);
+        //console.log("perm",JSON.stringify(perm));
+        return perm;
+      })
+      .flat()
+      .filter(v => v !== null);
+  }
+
   renderCombos(input) {
-    let remaining = input.slice(0);
     //console.log(JSON.stringify(input));
-    return input.map((arr, index) => {
-      //console.log(JSON.stringify(arr));
-      remaining[index] = null;
-      let others = remaining.filter((v, i) => v !== null);
+    return this.otherPermutate(input).map((arr, index) => {
       //console.log("arr",JSON.stringify(arr));
-      //console.log("others",JSON.stringify(others));
-      let perm = this.permutate(arr, others);
       return (<div key={index}>
-        {JSON.stringify(perm)}
+        {JSON.stringify(arr)}
       </div>)
     })
   }
